@@ -1,0 +1,46 @@
+<section>
+  <h2>Temas</h2>
+
+  <!-- Formulario para crear un nuevo tema -->
+  <form action="/topics" method="POST" class="card" style="display:flex; flex-direction:column; gap:8px;">
+    <input type="text" name="title" placeholder="Nuevo tema" required />
+    <textarea name="description" placeholder="Descripción (opcional)"></textarea>
+    <button type="submit">➕ Agregar tema</button>
+  </form>
+
+  <!-- Lista de temas -->
+  <ul class="list">
+    <% if (!topics || topics.length === 0) { %>
+      <li>No hay temas aún. ¡Crea el primero!</li>
+    <% } else { %>
+      <% topics.forEach(t => { %>
+        <li class="item" style="display:flex; align-items:center; gap:12px;">
+
+          <!-- Votaciones -->
+          <form action="/topics/<%= t.id %>/upvote" method="POST" style="margin:0;">
+            <button title="Votar arriba">▲</button>
+          </form>
+
+          <div><strong><%= t.votes %></strong></div>
+
+          <form action="/topics/<%= t.id %>/downvote" method="POST" style="margin:0;">
+            <button title="Votar abajo">▼</button>
+          </form>
+
+          <!-- Contenido del tema -->
+          <div style="flex:1; margin-left:8px;">
+            <strong><a href="/topics/<%= t.id %>"><%= t.title %></a></strong>
+            <div><%= t.description %></div>
+          </div>
+
+          <!-- Acciones -->
+          <a href="/topics/<%= t.id %>/edit">✏️ Editar</a>
+
+          <form action="/topics/<%= t.id %>/delete" method="POST" style="margin-left:8px;">
+            <button>🗑️ Eliminar</button>
+          </form>
+        </li>
+      <% }) %>
+    <% } %>
+  </ul>
+</section>

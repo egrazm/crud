@@ -1,0 +1,64 @@
+<a href="/topics">← Volver</a>
+
+<section class="card">
+  <h2><%= topic.title %></h2>
+  <p><%= topic.description %></p>
+
+  <div style="display:flex; align-items:center; gap:8px; margin-top:8px;">
+    <!-- votos del tema -->
+    <form action="/topics/<%= topic.id %>/upvote" method="POST" style="margin:0;">
+      <button title="Votar arriba">▲</button>
+    </form>
+    <strong><%= topic.votes %></strong>
+    <form action="/topics/<%= topic.id %>/downvote" method="POST" style="margin:0;">
+      <button title="Votar abajo">▼</button>
+    </form>
+
+    <a href="/topics/<%= topic.id %>/edit" class="ml-1">✏️ Editar tema</a>
+    <form action="/topics/<%= topic.id %>/delete" method="POST" class="ml-1" style="display:inline;">
+      <button class="danger">🗑️ Eliminar tema</button>
+    </form>
+  </div>
+</section>
+
+<section class="mt-1">
+  <h3>Recursos útiles (links)</h3>
+
+  <!-- Form para agregar link -->
+  <form action="/topics/<%= topic.id %>/links" method="POST" class="card" style="display:flex; flex-direction:column; gap:8px; max-width:700px;">
+    <input type="text" name="title" placeholder="Título del recurso" required />
+    <input type="url" name="url" placeholder="https://enlace.com/articulo-o-video" required />
+    <button type="submit">➕ Agregar link</button>
+  </form>
+
+  <!-- Lista de links -->
+  <ul class="list">
+    <% if (!links || links.length === 0) { %>
+      <li>No hay links aún. ¡Agrega el primero!</li>
+    <% } else { %>
+      <% links.forEach(l => { %>
+        <li class="item" style="display:flex; align-items:center; gap:12px;">
+          <!-- votos link -->
+          <form action="/topics/<%= topic.id %>/links/<%= l.id %>/upvote" method="POST" style="margin:0;">
+            <button title="Votar arriba">▲</button>
+          </form>
+          <div><strong data-link-votes><%= l.votes %></strong></div>
+          <form action="/topics/<%= topic.id %>/links/<%= l.id %>/downvote" method="POST" style="margin:0;">
+            <button title="Votar abajo">▼</button>
+          </form>
+
+          <!-- contenido link -->
+          <div class="flex-1" style="margin-left:8px;">
+            <a href="<%= l.url %>" target="_blank" rel="noopener"><strong><%= l.title %></strong></a>
+            <div class="muted"><%= l.url %></div>
+          </div>
+
+          <!-- borrar link -->
+          <form action="/topics/<%= topic.id %>/links/<%= l.id %>/delete" method="POST">
+            <button class="danger">🗑️</button>
+          </form>
+        </li>
+      <% }) %>
+    <% } %>
+  </ul>
+</section>
