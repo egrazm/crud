@@ -1,4 +1,3 @@
-// db/sqlite.js
 import Database from "better-sqlite3";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -7,17 +6,15 @@ import fs from "fs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// carpeta y archivo de la DB
 const dbDir = path.join(__dirname);
 const dbPath = path.join(dbDir, "data.sqlite");
 
-// asegúrate de que la carpeta exista (por si cambias ruta)
-if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
+
+
 
 const db = new Database(dbPath);
 db.pragma("journal_mode = WAL");
 
-// tabla topics
 db.exec(`
   CREATE TABLE IF NOT EXISTS topics (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,7 +24,7 @@ db.exec(`
     created_at TEXT DEFAULT (datetime('now'))
   );
 `);
-// tabla links (recursos)
+
 db.exec(`
   CREATE TABLE IF NOT EXISTS links (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

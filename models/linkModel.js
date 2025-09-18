@@ -1,4 +1,3 @@
-// models/linkModel.js
 import db from "../db/sqlite.js";
 
 const qAllByTopic = db.prepare(`
@@ -46,7 +45,7 @@ export const Link = {
     const urlClean = (url || "").trim();
     if (!titleClean) throw new Error("title requerido");
     if (!urlClean) throw new Error("url requerida");
-    // validación simple
+   
     if (!/^https?:\/\//i.test(urlClean)) throw new Error("url debe comenzar con http:// o https://");
     const info = qInsert.run(Number(topicId), titleClean, urlClean);
     return this.find(info.lastInsertRowid);

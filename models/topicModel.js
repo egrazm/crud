@@ -1,7 +1,5 @@
-// models/topicModel.js
 import db from "../db/sqlite.js";
 
-// PREPARED STATEMENTS
 const stmtAll = db.prepare(`
   SELECT id, title, description, votes
   FROM topics
@@ -46,7 +44,7 @@ const stmtVoteDown = db.prepare(`
 
 export const Topic = {
   all() {
-    return stmtAll.all(); // array de filas
+    return stmtAll.all();
   },
 
   create({ title, description }) {

@@ -1,4 +1,3 @@
-// controllers/topicController.js
 import { Topic } from "../models/topicModel.js";
 import { Link } from "../models/linkModel.js";
 
