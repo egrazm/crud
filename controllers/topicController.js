@@ -7,7 +7,6 @@ export const topicController = {
     return res.render("index", { layout: "layout", topics });
   },
 
-  
   show(req, res) {
     const topic = Topic.find(req.params.id);
     if (!topic) return res.status(404).send("Tema no encontrado");
@@ -50,15 +49,13 @@ export const topicController = {
   upvote(req, res) {
     const t = Topic.upvote(req.params.id);
     if (!t) return res.status(404).send("Tema no encontrado");
-  
-    if (req.headers.accept?.includes("application/json")) return res.json({ id: t.id, votes: t.votes });
-    return res.redirect("/topics");
+    
+    return res.redirect(`/topics#topic-${req.params.id}`);
   },
 
   downvote(req, res) {
     const t = Topic.downvote(req.params.id);
     if (!t) return res.status(404).send("Tema no encontrado");
-    if (req.headers.accept?.includes("application/json")) return res.json({ id: t.id, votes: t.votes });
-    return res.redirect("/topics");
+    return res.redirect(`/topics#topic-${req.params.id}`);
   }
 };

@@ -1,21 +1,22 @@
-function $all(sel, root=document){ return Array.from(root.querySelectorAll(sel)); }
+function selectAll(selector, root = document) {
+  return Array.from(root.querySelectorAll(selector));
+}
 
-function reorderByVotes(listEl){
-  const items = $all('li.item', listEl);
-  items.sort((a,b)=>{
-    const av = parseInt(a.querySelector('[data-votes]').textContent,10) || 0;
-    const bv = parseInt(b.querySelector('[data-votes]').textContent,10) || 0;
-    return bv - av;
+function reorderByVotes(listElement) {
+  const items = selectAll("li.item", listElement);
+  items.sort((a, b) => {
+    const votesA = parseInt(a.querySelector("[data-votes]").textContent, 10);
+    const votesB = parseInt(b.querySelector("[data-votes]").textContent, 10);
+    return votesB - votesA; 
   });
-  items.forEach(i => listEl.appendChild(i));
+  items.forEach(item => listElement.appendChild(item));
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   const list = document.querySelector(".list");
-  if (!list) return;})
+  if (!list) return;
 
-
-  $all('form[action*="/upvote"], form[action*="/downvote"]').forEach(form => {
+  selectAll('form[action*="/upvote"], form[action*="/downvote"]').forEach(form => {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       try {
@@ -24,17 +25,18 @@ document.addEventListener("DOMContentLoaded", () => {
           headers: { "Accept": "application/json" }
         });
         if (!res.ok) throw new Error("Vote failed");
-        const data = await res.json(); 
-      
+
+        const data = await res.json();
+
         const li = form.closest("li.item");
         const counter = li.querySelector("[data-votes]");
         counter.textContent = String(data.votes);
-     
+
         reorderByVotes(list);
       } catch (err) {
-       
-        location.reload();
+    
+        window.location.reload();
       }
     });
   });
-
+});
